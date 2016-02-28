@@ -10,12 +10,12 @@ if (!file.exists(extractFile)) {
 #Read datafile
 allData = read.csv(extractFile, header = TRUE, sep=";", stringsAsFactors = FALSE, na.strings = "?")
 plotData = allData[allData$Date %in% c("1/2/2007","2/2/2007"),]
+plotData$plotDate <- strptime(paste(plotData$Date, plotData$Time, sep=" "),"%d/%m/%Y %H:%M:%S")
 rm(allData)
 
 #plot and save png
-plot2Data = plotData[!is.na(plotData$Global_active_power) & !is.na(plotData$Date), ]
-plot2Data$plotDate <- strptime(paste(plot2Data$Date, plot2Data$Time, sep=" "),"%d/%m/%Y %H:%M:%S")
+plot2Data = plotData[!is.na(plotData$Global_active_power) & !is.na(plotData$plotDate), ]
+png(filename = "plot2.png", width = 480, height = 480, units = "px")
 plot(plot2Data$plotDate, plot2Data$Global_active_power, type="n", xlab="", ylab="Global Active Power (kilowatts)")
 lines(plot2Data$plotDate, plot2Data$Global_active_power, type="l")
-plotDev = dev.copy(png, filename = "plot2.png", width = 480, height = 480, units = "px")
-dev.off(plotDev)
+dev.off()
