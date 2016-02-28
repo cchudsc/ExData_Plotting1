@@ -14,6 +14,8 @@ rm(allData)
 
 #plot and save png
 plot2Data = plotData[!is.na(plotData$Global_active_power) & !is.na(plotData$Date), ]
-lines(as.Date(plot2Data$Date), plot2Data$Global_active_power)
+plot2Data$plotDate <- strptime(paste(plot2Data$Date, plot2Data$Time, sep=" "),"%d/%m/%Y %H:%M:%S")
+plot(plot2Data$plotDate, plot2Data$Global_active_power, type="n", xlab="", ylab="Global Active Power (kilowatts)")
+lines(plot2Data$plotDate, plot2Data$Global_active_power, type="l")
 plotDev = dev.copy(png, filename = "plot2.png", width = 480, height = 480, units = "px")
 dev.off(plotDev)
